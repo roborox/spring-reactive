@@ -6,6 +6,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.beans.factory.config.BeanPostProcessor;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
 
@@ -16,8 +17,9 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
+@Configuration
 @PropertySource(value = {"classpath:/init.properties", "classpath:/app.properties", "${config.path}"}, ignoreResourceNotFound = true)
-public class ConsulPropertySourceConfiguration {
+class ConsulPropertySourceConfiguration {
     public static final Logger logger = LoggerFactory.getLogger(ConsulPropertySourceConfiguration.class);
 
     @Value("${httpPort:-1}")

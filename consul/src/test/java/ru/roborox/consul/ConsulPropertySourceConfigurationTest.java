@@ -34,7 +34,7 @@ public class ConsulPropertySourceConfigurationTest {
     }
     
     @Test
-    public void load() throws Exception {
+    public void load() {
         assertEquals(configuration.getHttpPort().intValue(), 8081);
         assertEquals(objectWithFields.value8.get(), "fallback");
         consulClient.setKVValue("common/key8", "value8");
