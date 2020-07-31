@@ -5,6 +5,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.beans.factory.config.BeanPostProcessor;
+import org.springframework.boot.web.server.LocalServerPort;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
@@ -22,7 +23,7 @@ import java.util.concurrent.TimeUnit;
 class ConsulPropertySourceConfiguration {
     public static final Logger logger = LoggerFactory.getLogger(ConsulPropertySourceConfiguration.class);
 
-    @Value("${server.port:-1}")
+    @LocalServerPort
     private Integer httpPort;
     
     @Bean
