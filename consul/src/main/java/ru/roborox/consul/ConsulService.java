@@ -33,6 +33,7 @@ public class ConsulService {
 
     @PostConstruct
     public void init() throws UnknownHostException {
+        logger.info("init()");
         final List<String> tags;
         if (web) {
             tags = new ArrayList<>();
