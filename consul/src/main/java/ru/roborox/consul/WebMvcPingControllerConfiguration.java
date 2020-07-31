@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RestController;
 @ConditionalOnWebApplication(type = ConditionalOnWebApplication.Type.SERVLET)
 public class WebMvcPingControllerConfiguration {
     @RestController
-    static class PingController {
+    class PingController {
         @GetMapping({"/ping"})
         public String ping() {
             return "{\"success\":true}";

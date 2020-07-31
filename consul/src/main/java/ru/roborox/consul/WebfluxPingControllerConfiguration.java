@@ -10,7 +10,7 @@ import reactor.core.publisher.Mono;
 @ConditionalOnWebApplication(type = ConditionalOnWebApplication.Type.REACTIVE)
 public class WebfluxPingControllerConfiguration {
     @RestController
-    static class PingController {
+    class PingController {
         @GetMapping({"/ping"})
         public Mono<String> ping() {
             return Mono.just("{\"success\":true}");
