@@ -22,7 +22,7 @@ import java.util.concurrent.TimeUnit;
 class ConsulPropertySourceConfiguration {
     public static final Logger logger = LoggerFactory.getLogger(ConsulPropertySourceConfiguration.class);
 
-    @Value("${httpPort:-1}")
+    @Value("${server.port:-1}")
     private Integer httpPort;
     
     @Bean

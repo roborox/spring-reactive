@@ -66,6 +66,7 @@ public class ConsulService {
             String artifact = propertySource.getProperty("artifact");
             String appName = propertySource.getProperty("consulAppName", user + "-" + artifact);
             NewService.Check check;
+            logger.info("registerInConsul {} web:{} port:{}", tags, web, port);
             if (web && port > 0) {
                 service.setPort(port);
                 check = createHttpCheck(port);
@@ -93,6 +94,7 @@ public class ConsulService {
     }
 
     private static NewService.Check createHttpCheck(Integer port) {
+        logger.info("createHttpCheck {}", port);
         NewService.Check check = new NewService.Check();
         check.setHttp("http://127.0.0.1:" + port + "/ping");
         check.setTimeout("1s");
@@ -101,10 +103,11 @@ public class ConsulService {
     }
 
     private static NewService.Check createScriptCheck(String checkPath) {
+        logger.info("createScriptCheck {}", checkPath);
         NewService.Check check = new NewService.Check();
         check.setScript(checkPath);
         check.setTimeout("5s");
-        check.setTtl("30s");
+        check.setInterval("30s");
         return check;
     }
 

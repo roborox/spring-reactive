@@ -26,7 +26,7 @@ public class ConsulPropertySourceConfigurationTest {
         consulClient.setKVValue("consul/common/key5", "value5ConsulCommon");
         consulClient.setKVValue("consul/test/key5", "value5test");
         consulClient.setKVValue("consul/test/key6", "value6test");
-        consulClient.setKVValue("consul/common/httpPort", "8081");
+        consulClient.setKVValue("consul/common/server.port", "8081");
         consulClient.deleteKVValue("common/key8");
         consulClient.deleteKVValue("common/dmitry/key8");
         consulClient.deleteKVValue("consul/common/key8");
