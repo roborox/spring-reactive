@@ -40,6 +40,7 @@
         <module>common</module>
         <module>logger</module>
         <module>consul</module>
+        <module>jms</module>
     </modules>
 
 	<properties>
