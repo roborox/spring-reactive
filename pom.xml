@@ -53,6 +53,7 @@
 
         <scala.version>2.13.2</scala.version>
         <scala.major.version>2.13</scala.major.version>
+        <springfox.version>3.0.0</springfox.version>
     </properties>
 
 	<build>
@@ -223,6 +224,11 @@
             </dependency>
             <dependency>
                 <groupId>ru.roborox.spring</groupId>
+                <artifactId>persist</artifactId>
+                <version>1.0-SNAPSHOT</version>
+            </dependency>
+            <dependency>
+                <groupId>ru.roborox.spring</groupId>
                 <artifactId>logger</artifactId>
                 <version>1.0-SNAPSHOT</version>
             </dependency>
@@ -235,6 +241,16 @@
                 <groupId>ru.roborox.spring</groupId>
                 <artifactId>common</artifactId>
                 <version>1.0-SNAPSHOT</version>
+            </dependency>
+            <dependency>
+                <groupId>io.springfox</groupId>
+                <artifactId>springfox-core</artifactId>
+                <version>${springfox.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>io.springfox</groupId>
+                <artifactId>springfox-boot-starter</artifactId>
+                <version>${springfox.version}</version>
             </dependency>
             <dependency>
                 <groupId>com.icegreen</groupId>
