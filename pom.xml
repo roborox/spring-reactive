@@ -41,6 +41,7 @@
         <module>logger</module>
         <module>consul</module>
         <module>jms</module>
+        <module>persist</module>
     </modules>
 
 	<properties>
@@ -194,6 +195,11 @@
                 <artifactId>test-common</artifactId>
                 <version>1.0-SNAPSHOT</version>
                 <scope>test</scope>
+            </dependency>
+            <dependency>
+                <groupId>ru.roborox.spring</groupId>
+                <artifactId>jms</artifactId>
+                <version>1.0-SNAPSHOT</version>
             </dependency>
             <dependency>
                 <groupId>ru.roborox.spring</groupId>
