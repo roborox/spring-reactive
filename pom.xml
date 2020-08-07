@@ -42,6 +42,7 @@
         <module>consul</module>
         <module>jms</module>
         <module>persist</module>
+        <module>settings</module>
     </modules>
 
 	<properties>
