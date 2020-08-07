@@ -5,9 +5,11 @@ import org.apache.activemq.artemis.core.config.impl.ConfigurationImpl;
 import org.apache.activemq.artemis.core.remoting.impl.netty.NettyAcceptorFactory;
 import org.apache.activemq.artemis.core.remoting.impl.netty.NettyConnectorFactory;
 import org.apache.activemq.artemis.core.remoting.impl.netty.TransportConstants;
-import org.apache.activemq.artemis.core.server.embedded.EmbeddedActiveMQ;
 import org.apache.activemq.artemis.core.settings.impl.AddressFullMessagePolicy;
 import org.apache.activemq.artemis.core.settings.impl.AddressSettings;
+import org.apache.activemq.artemis.jms.server.config.JMSConfiguration;
+import org.apache.activemq.artemis.jms.server.config.impl.JMSConfigurationImpl;
+import org.apache.activemq.artemis.jms.server.embedded.EmbeddedJMS;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -22,8 +24,8 @@ public class MockJmsBrokerConfiguration {
     private String jmsBrokerUrls;
 
     @Bean(initMethod = "start", destroyMethod = "stop")
-    public EmbeddedActiveMQ embeddedJMS() {
-        EmbeddedActiveMQ jms = new EmbeddedActiveMQ();
+    public EmbeddedJMS embeddedJMS() {
+        EmbeddedJMS jms = new EmbeddedJMS();
         org.apache.activemq.artemis.core.config.Configuration configuration = new ConfigurationImpl();
         HashSet<TransportConfiguration> transports = new HashSet<>();
         Map<String, Object> transportConfig = new HashMap<>();
@@ -37,7 +39,8 @@ public class MockJmsBrokerConfiguration {
         configuration.setPersistenceEnabled(false);
         configuration.setSecurityEnabled(false);
         jms.setConfiguration(configuration);
-        jms.setConfiguration(new ConfigurationImpl());
+        JMSConfiguration jmsConfiguration = new JMSConfigurationImpl();
+        jms.setJmsConfiguration(jmsConfiguration);
 
         AddressSettings addressSettings = new AddressSettings();
         addressSettings
