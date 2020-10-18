@@ -43,6 +43,7 @@
         <module>jms</module>
         <module>persist</module>
         <module>settings</module>
+        <module>swagger</module>
     </modules>
 
 	<properties>
