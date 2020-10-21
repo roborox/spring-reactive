@@ -57,6 +57,8 @@
         <scala.version>2.13.2</scala.version>
         <scala.major.version>2.13</scala.major.version>
         <springfox.version>3.0.0</springfox.version>
+        <commons-email.version>1.5</commons-email.version>
+        <guice.version>4.2.2</guice.version>
     </properties>
 
 	<build>
@@ -286,6 +288,16 @@
                         <artifactId>slf4j-api</artifactId>
                     </exclusion>
                 </exclusions>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.commons</groupId>
+                <artifactId>commons-email</artifactId>
+                <version>${commons-email.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.google.inject</groupId>
+                <artifactId>guice</artifactId>
+                <version>${guice.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
