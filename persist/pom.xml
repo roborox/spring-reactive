@@ -53,6 +53,14 @@
             <groupId>ru.roborox.spring</groupId>
             <artifactId>test-common</artifactId>
         </dependency>
+        <dependency>
+            <groupId>ru.roborox.spring</groupId>
+            <artifactId>kotlin-ext</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>javax.annotation</groupId>
+            <artifactId>javax.annotation-api</artifactId>
+        </dependency>
     </dependencies>
 
 

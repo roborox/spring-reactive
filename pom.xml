@@ -52,6 +52,7 @@
         <maven.compiler.target>1.8</maven.compiler.target>
         <kotlin.compiler.jvmTarget>1.8</kotlin.compiler.jvmTarget>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <simple-http.version>6.0.1</simple-http.version>
 
         <scala.version>2.13.2</scala.version>
         <scala.major.version>2.13</scala.major.version>
@@ -261,8 +262,19 @@
             </dependency>
             <dependency>
                 <groupId>io.springfox</groupId>
+                <artifactId>springfox-spring-web</artifactId>
+                <version>${springfox.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>io.springfox</groupId>
                 <artifactId>springfox-boot-starter</artifactId>
                 <version>${springfox.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.simpleframework</groupId>
+                <artifactId>simple-http</artifactId>
+                <version>${simple-http.version}</version>
+                <scope>test</scope>
             </dependency>
             <dependency>
                 <groupId>com.icegreen</groupId>

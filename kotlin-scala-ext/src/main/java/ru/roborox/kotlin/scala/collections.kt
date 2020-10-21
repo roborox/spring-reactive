@@ -1,6 +1,6 @@
 @file:Suppress("PLATFORM_CLASS_MAPPED_TO_KOTLIN")
 
-package ru.roborox.kotlin
+package ru.roborox.kotlin.scala
 
 import reactor.core.publisher.Flux
 import ru.roborox.scala.Lists

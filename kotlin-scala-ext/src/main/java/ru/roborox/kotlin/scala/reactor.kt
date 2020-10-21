@@ -1,4 +1,4 @@
-package ru.roborox.kotlin
+package ru.roborox.kotlin.scala
 
 import reactor.core.publisher.Mono
 import scala.Option
