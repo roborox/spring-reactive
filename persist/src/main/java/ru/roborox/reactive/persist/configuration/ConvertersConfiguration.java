@@ -1,21 +1,16 @@
 package ru.roborox.reactive.persist.configuration;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import ru.roborox.reactive.persist.converter.*;
+import ru.roborox.reactive.persist.converter.BigDecimalCustomMongoConverter;
+import ru.roborox.reactive.persist.converter.BigIntegerCustomMongoConverter;
+import ru.roborox.reactive.persist.converter.CustomConversionsFactory;
+import ru.roborox.reactive.persist.converter.CustomMongoConverter;
 
 import java.util.List;
 
 @Configuration
 public class ConvertersConfiguration {
-    @Bean
-    @ConditionalOnBean(ObjectMapper.class)
-    public CustomMongoConverter objectNodeMongoConverter(ObjectMapper mapper) {
-        return new ObjectNodeMongoConverter(mapper);
-    }
-
     @Bean
     public CustomMongoConverter bigIntegerCustomMongoConverter() {
         return new BigIntegerCustomMongoConverter();
