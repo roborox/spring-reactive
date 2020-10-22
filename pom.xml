@@ -44,6 +44,9 @@
         <module>persist</module>
         <module>settings</module>
         <module>swagger</module>
+        <module>validator</module>
+        <module>lock</module>
+        <module>lock-redis</module>
     </modules>
 
 	<properties>
@@ -59,6 +62,7 @@
         <springfox.version>3.0.0</springfox.version>
         <commons-email.version>1.5</commons-email.version>
         <guice.version>4.2.2</guice.version>
+        <commons-beanutils.version>1.9.3</commons-beanutils.version>
     </properties>
 
 	<build>
@@ -219,6 +223,21 @@
             </dependency>
             <dependency>
                 <groupId>ru.roborox.spring</groupId>
+                <artifactId>validator</artifactId>
+                <version>1.0-SNAPSHOT</version>
+            </dependency>
+            <dependency>
+                <groupId>ru.roborox.spring</groupId>
+                <artifactId>lock</artifactId>
+                <version>1.0-SNAPSHOT</version>
+            </dependency>
+            <dependency>
+                <groupId>ru.roborox.spring</groupId>
+                <artifactId>lock-redis</artifactId>
+                <version>1.0-SNAPSHOT</version>
+            </dependency>
+            <dependency>
+                <groupId>ru.roborox.spring</groupId>
                 <artifactId>settings</artifactId>
                 <version>1.0-SNAPSHOT</version>
             </dependency>
@@ -298,6 +317,11 @@
                 <groupId>com.google.inject</groupId>
                 <artifactId>guice</artifactId>
                 <version>${guice.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>commons-beanutils</groupId>
+                <artifactId>commons-beanutils</artifactId>
+                <version>${commons-beanutils.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
