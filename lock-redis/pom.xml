@@ -13,9 +13,8 @@
 
     <dependencies>
         <dependency>
-            <groupId>ru.roborox</groupId>
-            <artifactId>webflux-logging-utils</artifactId>
-            <version>0.1-SNAPSHOT</version>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>logger</artifactId>
         </dependency>
         <dependency>
             <groupId>org.springframework</groupId>
