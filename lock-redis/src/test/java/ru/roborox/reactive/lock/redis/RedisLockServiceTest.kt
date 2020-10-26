@@ -14,11 +14,11 @@ class RedisLockServiceTest : AbstractIntegrationTest() {
 
         val value1 = RandomStringUtils.randomAlphabetic(10)
         val result1 = lockService.synchronize(key, 100000, Mono.just(value1)).block()
-        assertEquals(result1, value1)
+        assertEquals(value1, result1)
 
         val value2 = RandomStringUtils.randomAlphabetic(10)
         val result2 = lockService.synchronize(key, 100000, Mono.just(value2)).block()
-        assertEquals(result2, value2)
+        assertEquals(value2, result2)
     }
 
     @Test
@@ -43,14 +43,14 @@ class RedisLockServiceTest : AbstractIntegrationTest() {
         lockService.synchronize(key, 100000, mono2).subscribe { result2 = it }
 
         Thread.sleep(1000)
-        assertEquals(result2, null)
-        assertEquals(subscribed, false)
+        assertEquals(null, result2)
+        assertEquals(false, subscribed)
         sink1?.success(value1)
 
         waitAssert(600) {
-            assertEquals(result1, value1)
-            assertEquals(result2, value2)
-            assertEquals(subscribed, true)
+            assertEquals(value1, result1)
+            assertEquals(value2, result2)
+            assertEquals(true, subscribed)
         }
     }
 
@@ -60,7 +60,7 @@ class RedisLockServiceTest : AbstractIntegrationTest() {
             .subscriberContext { it.put("testing", "value") }
             .block()
 
-        assertEquals(result, "value")
+        assertEquals("value", result)
     }
 
     private val testingCtx: Mono<String> = Mono.subscriberContext().filter { it.hasKey("testing") }.map { it.get<String>("testing") }
