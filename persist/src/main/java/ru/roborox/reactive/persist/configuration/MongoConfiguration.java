@@ -2,10 +2,13 @@ package ru.roborox.reactive.persist.configuration;
 
 import com.mongodb.ConnectionString;
 import com.mongodb.MongoClientSettings;
+import com.mongodb.reactivestreams.client.MongoClient;
+import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 import org.springframework.data.mongodb.config.AbstractReactiveMongoConfiguration;
@@ -27,6 +30,13 @@ public class MongoConfiguration extends AbstractReactiveMongoConfiguration {
     private String mongoDatabase;
     @Autowired
     private CustomConversionsFactory customConversionsFactory;
+
+    @NotNull
+    @Bean
+    @Override
+    public MongoClient reactiveMongoClient() {
+        return super.reactiveMongoClient();
+    }
 
     @Override
     protected void configureClientSettings(MongoClientSettings.Builder builder) {
