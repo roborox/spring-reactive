@@ -22,6 +22,7 @@ object Wait {
     }
 
     @Throws(Exception::class)
+    @JvmStatic
     fun waitAssert(timeout: Long = 5000, runnable: () -> Unit) {
         val maxTime = System.currentTimeMillis() + timeout
         while (true) {
