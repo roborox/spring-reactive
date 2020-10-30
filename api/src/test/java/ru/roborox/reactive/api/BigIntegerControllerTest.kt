@@ -1,7 +1,10 @@
 package ru.roborox.reactive.api
 
+import com.fasterxml.jackson.databind.ObjectMapper
+import org.apache.commons.lang3.RandomUtils
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
+import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.boot.web.server.LocalServerPort
@@ -32,12 +35,15 @@ class BigIntegerControllerTest {
     @LocalServerPort
     private var port: Int = 0
 
+    @Autowired
+    private lateinit var mapper: ObjectMapper
+
     @Test
     fun bigintToString() {
         val result = URL("http://localhost:$port/bigint").openConnection().getInputStream().use {
             InputStreamReader(it).use { isr -> isr.readText() }
         }
-        Assertions.assertEquals("10", result)
+        Assertions.assertEquals("\"10\"", result)
     }
 
     @Test
@@ -48,6 +54,18 @@ class BigIntegerControllerTest {
         Assertions.assertEquals("{\"value\":\"10\"}", result)
     }
 
+    @Test
+    fun bigintSerializeByMapper() {
+        val value = BigInteger.TEN.pow(18)
+        Assertions.assertEquals("\"$value\"", mapper.writeValueAsString(value))
+    }
+
+    @Test
+    fun bigintDeserialize() {
+        val value = BigInteger.TEN.pow(18).multiply(BigInteger.valueOf(RandomUtils.nextInt(100, 1000).toLong()))
+        Assertions.assertEquals(mapper.readValue(value.toString(), BigInteger::class.java), value)
+        Assertions.assertEquals(mapper.readValue("\"$value\"", BigInteger::class.java), value)
+    }
 }
 
 data class JsonWithBigInt(val value: BigInteger)
