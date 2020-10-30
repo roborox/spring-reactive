@@ -21,7 +21,10 @@ class BigIntegerControllerTest {
         @EnableRoboroxApi
         class Controller {
             @GetMapping("/bigint")
-            fun getBigint(): BigInteger = BigInteger.TEN
+            fun getBigint() = BigInteger.TEN
+
+            @GetMapping("/json")
+            fun getJsonBigInt() = JsonWithBigInt(BigInteger.TEN)
         }
 
     }
@@ -36,4 +39,15 @@ class BigIntegerControllerTest {
         }
         Assertions.assertEquals("10", result)
     }
+
+    @Test
+    fun withJson() {
+        val result = URL("http://localhost:$port/json").openConnection().getInputStream().use {
+            InputStreamReader(it).use { isr -> isr.readText() }
+        }
+        Assertions.assertEquals("{\"value\":\"10\"}", result)
+    }
+
 }
+
+data class JsonWithBigInt(val value: BigInteger)
