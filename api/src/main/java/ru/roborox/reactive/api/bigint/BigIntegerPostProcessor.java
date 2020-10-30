@@ -4,9 +4,9 @@ import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonToken;
 import com.fasterxml.jackson.databind.DeserializationContext;
-import com.fasterxml.jackson.databind.JsonSerializer;
 import com.fasterxml.jackson.databind.SerializerProvider;
 import com.fasterxml.jackson.databind.deser.std.StdScalarDeserializer;
+import com.fasterxml.jackson.databind.ser.std.StdScalarSerializer;
 import org.springframework.boot.jackson.JsonComponent;
 
 import java.io.IOException;
@@ -15,7 +15,11 @@ import java.math.BigInteger;
 @JsonComponent
 public class BigIntegerPostProcessor {
 
-    public static class Serializer extends JsonSerializer<BigInteger> {
+    public static class Serializer extends StdScalarSerializer<BigInteger> {
+
+        public Serializer() {
+            super(BigInteger.class);
+        }
 
         @Override
         public void serialize(BigInteger value, JsonGenerator jsonGenerator,
