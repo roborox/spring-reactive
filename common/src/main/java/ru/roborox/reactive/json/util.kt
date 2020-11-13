@@ -6,8 +6,6 @@ import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.databind.SerializationFeature
 import com.fasterxml.jackson.databind.module.SimpleModule
 import com.fasterxml.jackson.module.kotlin.KotlinModule
-import org.springframework.context.annotation.Bean
-import org.springframework.context.annotation.Configuration
 
 
 fun ObjectMapper.withModule(postprocessor: PostProcessor<SimpleModule>): ObjectMapper {
@@ -27,10 +25,4 @@ object ObjectMapperUtils {
         mapper.configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, true)
         return mapper
     }
-}
-
-@Configuration
-class DefaultObjectMapperConfiguration {
-    @Bean
-    fun mapper() = ObjectMapperUtils.defaultObjectMapper()
 }
