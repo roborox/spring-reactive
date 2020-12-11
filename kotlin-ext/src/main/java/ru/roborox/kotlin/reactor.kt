@@ -51,8 +51,8 @@ fun <Id, T: Identifiable<Id>, R: Identifiable<Id>> List<T>.extendById(mapper: (T
 }
 
 
-fun <T> Mono<T>.retryOptimistickLock(retries: Int = 5): Mono<T> = this
-    .retry(5) {
+fun <T> Mono<T>.retryOptimisticLock(retries: Long = 5): Mono<T> = this
+    .retry(retries) {
         it is OptimisticLockingFailureException
     }
 
