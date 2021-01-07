@@ -162,7 +162,7 @@ fun <T> T?.justOrEmpty(): Mono<T> {
 
 fun <T> Callable<T>.blockingToMono(): Mono<T> {
     return Mono.just(Unit)
-        .publishOn(Schedulers.elastic())
+        .publishOn(Schedulers.boundedElastic())
         .flatMap {
             try {
                 Mono.just(this.call())
