@@ -19,7 +19,7 @@ public class ReactiveJmsSender {
 
     public Mono<Void> convertAndSend(Destination destination, Object message) {
         return Mono.just(message)
-            .publishOn(Schedulers.elastic())
+            .publishOn(Schedulers.boundedElastic())
             .flatMap(msg -> {
                 try {
                     if (logger.isDebugEnabled())
