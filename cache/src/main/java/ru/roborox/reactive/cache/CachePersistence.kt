@@ -10,5 +10,5 @@ interface CachePersistence<K, V> {
      * load data from persistent cache by key. should update access date
      */
     fun load(key: K): Mono<V>
-    fun save(key: K, value: V): Mono<Void>
+    fun save(key: K, value: CacheResponse<V>): Mono<Void>
 }

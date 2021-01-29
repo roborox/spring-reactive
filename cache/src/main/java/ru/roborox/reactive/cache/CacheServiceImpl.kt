@@ -22,7 +22,7 @@ class CacheServiceImpl<K, V>(
         persistence.load(key)
             .switchIfEmpty {
                 descriptor.get(key)
-                    .flatMap { persistence.save(key, it).thenReturn(it) }
+                    .flatMap { persistence.save(key, it).thenReturn(it.value) }
 
             }
 }

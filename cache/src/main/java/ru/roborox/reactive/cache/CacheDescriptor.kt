@@ -14,5 +14,5 @@ interface CacheDescriptor<K, V> {
     /**
      * real get, fetches data by key
      */
-    fun get(key: K): Mono<V>
+    fun get(key: K): Mono<CacheResponse<V>>
 }
