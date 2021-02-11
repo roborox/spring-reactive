@@ -176,7 +176,7 @@ fun <T1, T2, T3, T4, T5, T6, T7, T8, T9> zip(
 fun <T1, T2, T3, T4, T5, T6, T7, T8, T9, T10> zip(
     t1: Mono<T1>, t2: Mono<T2>, t3: Mono<T3>, t4: Mono<T4>, t5: Mono<T5>, t6: Mono<T6>, t7: Mono<T7>, t8: Mono<T8>, t9: Mono<T9>, t10: Mono<T10>
 ): Mono<Tuple10<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10>> =
-    reactor.kotlin.core.publisher.zip(t1, t2, t3, t4, t5, t6, t7, t8, t9) { zipped ->
+    reactor.kotlin.core.publisher.zip(t1, t2, t3, t4, t5, t6, t7, t8, t9, t10) { zipped ->
         Tuple10(
             zipped[0] as T1,
             zipped[1] as T2,
