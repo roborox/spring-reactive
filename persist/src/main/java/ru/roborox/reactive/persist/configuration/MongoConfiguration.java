@@ -24,32 +24,36 @@ import ru.roborox.reactive.persist.jackson.ObjectIdCombinedSerializer;
 public class MongoConfiguration extends AbstractReactiveMongoConfiguration {
     public static final Logger logger = LoggerFactory.getLogger(MongoConfiguration.class);
 
-    @Value("${mongoUrls}")
-    private String mongoUrls;
-    @Value("${mongoDatabase}")
-    private String mongoDatabase;
+    @Value("${spring.data.mongodb.uri}")
+    private String uri;
+
+    @Value("${spring.data.mongodb.database}")
+    private String database;
+
     @Autowired
     private CustomConversionsFactory customConversionsFactory;
 
-    @NotNull
     @Bean
     @Override
+    @NotNull
     public MongoClient reactiveMongoClient() {
         return super.reactiveMongoClient();
     }
 
     @Override
     protected void configureClientSettings(MongoClientSettings.Builder builder) {
-        logger.info("creating mongoClient using {}", mongoUrls);
-        builder.applyConnectionString(new ConnectionString(String.format("mongodb://%s", mongoUrls)));
+        logger.info("creating mongoClient using {}", uri);
+        builder.applyConnectionString(new ConnectionString(uri));
     }
 
     @Override
+    @NotNull
     protected String getDatabaseName() {
-        return mongoDatabase;
+        return database;
     }
 
     @Override
+    @NotNull
     public MongoCustomConversions customConversions() {
         return customConversionsFactory.create();
     }
