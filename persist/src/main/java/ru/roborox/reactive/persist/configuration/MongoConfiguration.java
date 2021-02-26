@@ -7,11 +7,13 @@ import org.springframework.context.annotation.Import;
 import org.springframework.data.mongodb.core.convert.MongoCustomConversions;
 import ru.roborox.reactive.persist.converter.CustomConversionsFactory;
 import ru.roborox.reactive.persist.jackson.ObjectIdCombinedSerializer;
+import ru.roborox.reactive.persist.migrate.MongoIndicesService;
 
 @Configuration
 @Import({
     ConvertersConfiguration.class,
-    ObjectIdCombinedSerializer.class
+    ObjectIdCombinedSerializer.class,
+    MongoIndicesService.class
 })
 public class MongoConfiguration {
     @Autowired
