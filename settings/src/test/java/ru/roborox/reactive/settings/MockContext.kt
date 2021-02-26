@@ -1,5 +1,6 @@
 package ru.roborox.reactive.settings
 
+import org.springframework.boot.autoconfigure.EnableAutoConfiguration
 import ru.roborox.reactive.persist.configuration.EnableRoboroxMongo
 import ru.roborox.reactive.persist.configuration.IncludePersistProperties
 import ru.roborox.reactive.settings.configuration.EnableRoboroxSettings
@@ -7,4 +8,5 @@ import ru.roborox.reactive.settings.configuration.EnableRoboroxSettings
 @EnableRoboroxSettings
 @EnableRoboroxMongo
 @IncludePersistProperties
+@EnableAutoConfiguration
 class MockContext
