@@ -16,7 +16,9 @@ public class AsyncMongoHelper {
 
     private final List<String> ignoreCollections = Arrays.asList(
         "db_version",
-        "counters"
+        "counters",
+        "mongockChangeLog",
+        "mongockLock"
     );
 
     public Flux<DeleteResult> cleanup() {
