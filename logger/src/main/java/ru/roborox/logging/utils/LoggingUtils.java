@@ -26,6 +26,11 @@ public class LoggingUtils {
             .flatMapMany(action);
     }
 
+    public static Mono<LogstashMarker> marker() {
+        return Mono.subscriberContext()
+            .map(LoggingUtils::createMarker);
+    }
+
     private static LogstashMarker createMarker(Context ctx) {
         final Map<Object, Object> map = ctx.stream()
             .filter(it -> it.getKey() instanceof String && ((String) it.getKey()).startsWith(PREFIX))
