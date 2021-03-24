@@ -15,6 +15,7 @@ import org.springframework.web.bind.support.WebExchangeBindException;
 import org.springframework.web.server.ResponseStatusException;
 import reactor.core.publisher.Mono;
 import ru.roborox.logging.utils.LoggingUtils;
+import ru.roborox.reactive.exceptions.HttpStatusException;
 import ru.roborox.reactive.exceptions.NotFoundException;
 
 @ControllerAdvice
@@ -38,11 +39,11 @@ public class ControllerExceptionHandler extends AbstractExceptionHandler {
 		});
 	}
 
-	@ExceptionHandler(NotFoundException.class)
-	public Mono<ResponseEntity<Void>> error(ServerHttpRequest request, NotFoundException ex) {
+	@ExceptionHandler(HttpStatusException.class)
+	public Mono<ResponseEntity<Void>> error(ServerHttpRequest request, HttpStatusException ex) {
 		return LoggingUtils.withMarker(marker -> {
 			logger.trace(marker, buildMessage(request, ex));
-			return Mono.just(new ResponseEntity<>((Void) null, HttpStatus.NOT_FOUND));
+			return Mono.just(new ResponseEntity<>((Void) null, ex.getHttpStatus()));
 		});
 	}
 
