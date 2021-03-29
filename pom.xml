@@ -48,6 +48,7 @@
         <module>lock</module>
         <module>lock-redis</module>
         <module>api</module>
+        <module>feign</module>
     </modules>
 
 	<properties>
@@ -64,6 +65,7 @@
         <commons-email.version>1.5</commons-email.version>
         <guice.version>4.2.2</guice.version>
         <commons-beanutils.version>1.9.3</commons-beanutils.version>
+        <feign-reactor.version>2.0.30</feign-reactor.version>
     </properties>
 
 	<build>
@@ -333,6 +335,16 @@
                 <groupId>commons-beanutils</groupId>
                 <artifactId>commons-beanutils</artifactId>
                 <version>${commons-beanutils.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.playtika.reactivefeign</groupId>
+                <artifactId>feign-reactor-webclient</artifactId>
+                <version>${feign-reactor.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.playtika.reactivefeign</groupId>
+                <artifactId>feign-reactor-spring-configuration</artifactId>
+                <version>${feign-reactor.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
