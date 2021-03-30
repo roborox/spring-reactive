@@ -4,13 +4,15 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.reactive.awaitFirst
 import kotlinx.coroutines.reactive.awaitFirstOrNull
+import org.springframework.stereotype.Service
 import ru.roborox.kotlin.coroutine.optimisticLock
 
+@Service
 class TaskRunner(
     private val taskRepository: TaskRepository
 ) {
     @ExperimentalCoroutinesApi
-    suspend fun <T: Any> run(param: String, handler: TaskHandler<T>) {
+    suspend fun <T : Any> runLongTask(param: String, handler: TaskHandler<T>) {
         val task = findAndMarkRunning(handler.type, param)
         if (task != null) {
             runAndSaveTask(task, param, handler)
@@ -18,16 +20,17 @@ class TaskRunner(
     }
 
     @Suppress("UNCHECKED_CAST")
-    private suspend fun <T: Any> runAndSaveTask(task: Task, param: String, handler: TaskHandler<T>) {
+    private suspend fun <T : Any> runAndSaveTask(task: Task, param: String, handler: TaskHandler<T>) {
         var current = task
         try {
-            handler.run(task.state as T, param)
+            handler.runLongTask(task.state as T?, param)
                 .collect { next ->
                     current = taskRepository.save(current.withState(next)).awaitFirst()
                 }
             taskRepository.save(current.markCompleted()).awaitFirst()
         } catch (e: Throwable) {
-            taskRepository.save(current.markError(e))
+            taskRepository.save(current.markError(e)).awaitFirst()
+            throw e
         }
     }
 

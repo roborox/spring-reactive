@@ -31,7 +31,7 @@ object Wait {
                 return
             } catch (e: Throwable) {
                 when (e) {
-                    is AssertionFailedError, is KotlinNullPointerException -> {
+                    is AssertionFailedError, is KotlinNullPointerException, is AssertionError -> {
                         if (System.currentTimeMillis() > maxTime) {
                             throw e
                         }
