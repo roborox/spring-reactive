@@ -6,12 +6,14 @@ import org.springframework.data.annotation.Id
 import org.springframework.data.annotation.Version
 import org.springframework.data.mongodb.core.index.CompoundIndex
 import org.springframework.data.mongodb.core.index.CompoundIndexes
+import org.springframework.data.mongodb.core.index.Indexed
 import org.springframework.data.mongodb.core.mapping.Document
 import java.util.*
 
 @Document(collection = "task")
 @CompoundIndexes(
-    CompoundIndex(def = "{type: 1, param: 1}", background = true, unique = true)
+    CompoundIndex(def = "{type: 1, param: 1}", background = true, unique = true),
+    CompoundIndex(def = "{running: 1, lastStatus: 1}", background = true)
 )
 data class Task(
     val type: String,
@@ -29,6 +31,11 @@ data class Task(
 ) {
     fun withState(newState: Any) = copy(
         state = newState,
+        lastUpdateDate = Date()
+    )
+
+    fun clearRunning() = copy(
+        running = false,
         lastUpdateDate = Date()
     )
 

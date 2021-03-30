@@ -110,11 +110,10 @@ class TaskRunnerTest : AbstractIntegrationTest() {
             assertThat(found)
                 .hasFieldOrPropertyWithValue(Task::lastStatus.name, TaskStatus.ERROR)
             assertThat(error)
-                .isOfAnyClassIn(IllegalStateException::class.java)
+                .isNull()
             assertThat(finished)
-                .isFalse()
+                .isTrue()
         }
-
 
     }
 }
