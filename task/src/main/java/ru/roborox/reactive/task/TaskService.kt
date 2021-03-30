@@ -31,19 +31,24 @@ class TaskService(
     }
 
     @Scheduled(initialDelayString = "\${roborox.task.initialDelay:60000}", fixedDelayString = "\${roborox.task.delay:60000}")
-    fun readAndRun() = runBlocking {
-        logger.info("readAndRun()")
-        Flux.concat(
-            taskRepository.findByRunningAndLastStatus(false, TaskStatus.ERROR),
-            taskRepository.findByRunningAndLastStatus(false, TaskStatus.NONE)
-        )
-            .asFlow()
-            .map {
-                async {
-                    runTask(it.type, it.param)
+    fun readAndRun() {
+        GlobalScope.launch {
+            logger.info("readAndRun()")
+            Flux.concat(
+                taskRepository.findByRunningAndLastStatus(false, TaskStatus.ERROR),
+                taskRepository.findByRunningAndLastStatus(false, TaskStatus.NONE)
+            )
+                .asFlow()
+                .map {
+                    async {
+                        runTask(it.type, it.param)
+                    }
                 }
-            }
-            .collect {}
+                .collect {
+                    logger.info("started: $it")
+                }
+            logger.info("completed readAndRun()")
+        }
     }
 
     suspend fun runTask(type: String, param: String) {
