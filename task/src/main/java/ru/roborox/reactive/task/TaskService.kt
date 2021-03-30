@@ -40,9 +40,7 @@ class TaskService(
             )
                 .asFlow()
                 .map {
-                    async {
-                        runTask(it.type, it.param)
-                    }
+                    runTask(it.type, it.param)
                 }
                 .collect {
                     logger.info("started: $it")
@@ -51,10 +49,12 @@ class TaskService(
         }
     }
 
-    suspend fun runTask(type: String, param: String) {
-        logger.info("runTask type=$type param=$param")
-        val handler = handlersMap.getValue(type)
-        runner.runLongTask(param, handler)
+    fun runTask(type: String, param: String) {
+        GlobalScope.launch {
+            logger.info("runTask type=$type param=$param")
+            val handler = handlersMap.getValue(type)
+            runner.runLongTask(param, handler)
+        }
     }
 
     companion object {
