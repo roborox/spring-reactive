@@ -24,7 +24,6 @@ class TaskRunnerTest : AbstractIntegrationTest() {
         override fun runLongTask(resume: Int?, param: String): Flow<Int> {
             return events.asFlow()
         }
-
     }
 
     @Test

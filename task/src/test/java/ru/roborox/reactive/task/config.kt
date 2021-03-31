@@ -10,7 +10,6 @@ import ru.roborox.reactive.persist.configuration.IncludePersistProperties
 @Configuration
 @EnableAutoConfiguration
 @EnableRoboroxTask
-@EnableRoboroxMongo
 @IncludePersistProperties
 class MockContext {
     @Bean
