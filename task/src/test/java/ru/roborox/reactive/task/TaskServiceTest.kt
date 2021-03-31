@@ -2,11 +2,14 @@ package ru.roborox.reactive.task
 
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.toList
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.reactive.awaitFirst
 import kotlinx.coroutines.runBlocking
 import org.apache.commons.lang3.RandomUtils
 import org.assertj.core.api.Assertions
+import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Qualifier
@@ -49,15 +52,15 @@ class TaskServiceTest : AbstractIntegrationTest() {
 
         waitAssert {
             val t1 = taskRepository.findByTypeAndParam("MOCK1", "p1").block()!!
-            Assertions.assertThat(t1)
+            assertThat(t1)
                 .hasFieldOrPropertyWithValue(Task::lastStatus.name, TaskStatus.NONE)
-            Assertions.assertThat(t1)
+            assertThat(t1)
                 .hasFieldOrPropertyWithValue(Task::running.name, true)
 
             val t2 = taskRepository.findByTypeAndParam("MOCK2", "p2").block()!!
-            Assertions.assertThat(t2)
+            assertThat(t2)
                 .hasFieldOrPropertyWithValue(Task::lastStatus.name, TaskStatus.NONE)
-            Assertions.assertThat(t2)
+            assertThat(t2)
                 .hasFieldOrPropertyWithValue(Task::running.name, true)
         }
 
@@ -68,11 +71,11 @@ class TaskServiceTest : AbstractIntegrationTest() {
 
         waitAssert {
             val t1 = taskRepository.findByTypeAndParam("MOCK1", "p1").block()!!
-            Assertions.assertThat(t1)
+            assertThat(t1)
                 .hasFieldOrPropertyWithValue(Task::state.name, v1)
 
             val t2 = taskRepository.findByTypeAndParam("MOCK2", "p2").block()!!
-            Assertions.assertThat(t2)
+            assertThat(t2)
                 .hasFieldOrPropertyWithValue(Task::state.name, v2)
         }
 
@@ -80,13 +83,16 @@ class TaskServiceTest : AbstractIntegrationTest() {
         handler2.sink.error(IllegalStateException())
 
         waitAssert {
-            val t1 = taskRepository.findByTypeAndParam("MOCK1", "p1").block()!!
-            Assertions.assertThat(t1)
+            val t1 = runBlocking { service.findTasks("MOCK1", "p1").first() }
+            assertThat(t1)
                 .hasFieldOrPropertyWithValue(Task::lastStatus.name, TaskStatus.COMPLETED)
 
-            val t2 = taskRepository.findByTypeAndParam("MOCK2", "p2").block()!!
-            Assertions.assertThat(t2)
+            val t2 = runBlocking { service.findTasks("MOCK2", "p2").first() }
+            assertThat(t2)
                 .hasFieldOrPropertyWithValue(Task::lastStatus.name, TaskStatus.ERROR)
         }
+
+        val list = runBlocking { service.findTasks("MOCK1").toList() }
+        assertThat(list).hasSize(1)
     }
 }

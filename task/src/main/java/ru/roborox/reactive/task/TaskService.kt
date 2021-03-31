@@ -6,6 +6,11 @@ import kotlinx.coroutines.reactive.asFlow
 import kotlinx.coroutines.reactive.awaitFirst
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
+import org.springframework.data.mongodb.core.ReactiveMongoOperations
+import org.springframework.data.mongodb.core.find
+import org.springframework.data.mongodb.core.query.Criteria
+import org.springframework.data.mongodb.core.query.Query
+import org.springframework.data.mongodb.core.query.isEqualTo
 import org.springframework.scheduling.annotation.Scheduled
 import org.springframework.stereotype.Service
 import reactor.core.publisher.Flux
@@ -15,6 +20,7 @@ import reactor.core.publisher.Flux
 class TaskService(
     private val taskRepository: TaskRepository,
     private val runner: TaskRunner,
+    private val mongo: ReactiveMongoOperations,
     handlers: List<TaskHandler<*>>
 ) {
     val handlersMap = handlers.map { it.type to it }.toMap()
@@ -55,6 +61,17 @@ class TaskService(
             val handler = handlersMap.getValue(type)
             runner.runLongTask(param, handler)
         }
+    }
+
+    fun findTasks(type: String, param: String? = null): Flow<Task> {
+        val typeCriteria = Task::type isEqualTo type
+        val c = param?.run {
+            Criteria().andOperator(
+                typeCriteria,
+                Task::param isEqualTo this
+            )
+        } ?: typeCriteria
+        return mongo.find<Task>(Query(c)).asFlow()
     }
 
     companion object {
