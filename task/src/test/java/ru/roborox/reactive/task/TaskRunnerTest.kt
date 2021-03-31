@@ -27,6 +27,35 @@ class TaskRunnerTest : AbstractIntegrationTest() {
     }
 
     @Test
+    fun doesntRunCompleted() {
+        var finished = false
+        val newTask = Task(
+            type = "MOCK1",
+            param = "p1",
+            lastStatus = TaskStatus.COMPLETED,
+            state = null,
+            running = false
+        )
+
+        mongo.save(newTask).block()
+
+        GlobalScope.launch {
+            runner.runLongTask("p1", handler)
+            finished = true
+        }
+
+        Thread.sleep(500)
+
+        waitAssert {
+            val found = taskRepository.findByTypeAndParam("MOCK1", "p1").block()!!
+            assertThat(found)
+                .hasFieldOrPropertyWithValue(Task::lastStatus.name, TaskStatus.COMPLETED)
+            assertThat(found)
+                .hasFieldOrPropertyWithValue(Task::running.name, false)
+        }
+    }
+
+    @Test
     fun savesTheState() {
         var finished = false
 
