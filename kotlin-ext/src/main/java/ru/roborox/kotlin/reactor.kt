@@ -1,11 +1,13 @@
 package ru.roborox.kotlin
 
 import org.slf4j.Logger
+import org.springframework.dao.DuplicateKeyException
 import org.springframework.dao.OptimisticLockingFailureException
 import reactor.core.publisher.Flux
 import reactor.core.publisher.Mono
 import reactor.core.scheduler.Schedulers
 import reactor.util.function.*
+import reactor.util.retry.Retry
 import java.util.*
 import java.util.concurrent.Callable
 
@@ -49,9 +51,7 @@ fun <Id, T: Identifiable<Id>, R: Identifiable<Id>> List<T>.extendById(mapper: (T
 
 
 fun <T> Mono<T>.retryOptimisticLock(retries: Long = 5): Mono<T> = this
-    .retry(retries) {
-        it is OptimisticLockingFailureException
-    }
+    .retryWhen(Retry.max(retries).filter { it is OptimisticLockingFailureException || it is DuplicateKeyException })
 
 
 inline fun <reified R> Flux<*>.filterIsInstance(): Flux<R> {

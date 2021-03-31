@@ -2,6 +2,7 @@ package ru.roborox.reactive.test.wait
 
 import org.junit.jupiter.api.Assertions
 import org.opentest4j.AssertionFailedError
+import java.lang.NullPointerException
 
 object Wait {
 
@@ -31,7 +32,7 @@ object Wait {
                 return
             } catch (e: Throwable) {
                 when (e) {
-                    is AssertionFailedError, is KotlinNullPointerException, is AssertionError -> {
+                    is AssertionFailedError, is KotlinNullPointerException, is AssertionError, is NullPointerException -> {
                         if (System.currentTimeMillis() > maxTime) {
                             throw e
                         }
