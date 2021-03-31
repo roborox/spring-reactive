@@ -21,7 +21,11 @@ class TaskRunner(
         logger.info("running ${handler.type} with param=$param")
         val task = findAndMarkRunning(handler.type, param)
         if (task != null) {
-            runAndSaveTask(task, handler)
+            if (handler.isAbleToRun(task.state as T?, task.param)) {
+                runAndSaveTask(task, handler)
+            } else {
+                logger.info("unable to run ${handler.type} with param=$param $task now")
+            }
         }
     }
 
