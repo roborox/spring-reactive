@@ -16,6 +16,6 @@ public @interface IncludePersistProperties {
 }
 
 @Configuration
-@PropertySource(value = {"classpath:/persist.properties", "classpath:/persist-test.properties", "file:../conf/persist.properties"}, ignoreResourceNotFound = true)
+@PropertySource(value = {"classpath:/persist.properties", "classpath:/auto-create-indexes.properties", "classpath:/persist-test.properties", "file:../conf/persist.properties"}, ignoreResourceNotFound = true)
 class PersistPropertiesConfiguration {
 }
