@@ -54,7 +54,7 @@ class TaskRunner(
         return optimisticLock {
             val task = taskRepository.findByTypeAndParam(type, param).awaitFirstOrNull()
             if (task != null) {
-                if (!task.running) {
+                if (!task.running && task.lastStatus != TaskStatus.COMPLETED) {
                     taskRepository.save(task.markRunning()).awaitFirst()
                 } else {
                     null
