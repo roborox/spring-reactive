@@ -11,7 +11,6 @@ import org.junit.jupiter.api.Test
 import reactor.core.publisher.FluxSink
 import reactor.core.publisher.ReplayProcessor
 import ru.roborox.reactive.test.wait.Wait.waitAssert
-import java.lang.IllegalStateException
 
 @ExperimentalCoroutinesApi
 class TaskRunnerTest : AbstractIntegrationTest() {
@@ -43,6 +42,8 @@ class TaskRunnerTest : AbstractIntegrationTest() {
                 .hasFieldOrPropertyWithValue(Task::lastStatus.name, TaskStatus.NONE)
             assertThat(found)
                 .hasFieldOrPropertyWithValue(Task::running.name, true)
+            assertThat(runnerEvents)
+                .hasSize(1)
         }
 
         val state1 = RandomUtils.nextInt()
@@ -61,6 +62,8 @@ class TaskRunnerTest : AbstractIntegrationTest() {
                 .hasFieldOrPropertyWithValue(Task::state.name, state2)
             assertThat(found)
                 .hasFieldOrPropertyWithValue(Task::running.name, true)
+            assertThat(runnerEvents)
+                .hasSize(1)
         }
 
         sink.complete()
@@ -74,6 +77,8 @@ class TaskRunnerTest : AbstractIntegrationTest() {
                 .hasFieldOrPropertyWithValue(Task::lastStatus.name, TaskStatus.COMPLETED)
             assertThat(finished)
                 .isTrue()
+            assertThat(runnerEvents)
+                .hasSize(2)
         }
     }
 
@@ -114,6 +119,5 @@ class TaskRunnerTest : AbstractIntegrationTest() {
             assertThat(finished)
                 .isTrue()
         }
-
     }
 }

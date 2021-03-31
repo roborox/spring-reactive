@@ -50,7 +50,7 @@ class TaskService(
     }
 
     fun runTask(type: String, param: String) {
-        GlobalScope.launch {
+        GlobalScope.launch { //todo GlobalScope - not good
             logger.info("runTask type=$type param=$param")
             val handler = handlersMap.getValue(type)
             runner.runLongTask(param, handler)

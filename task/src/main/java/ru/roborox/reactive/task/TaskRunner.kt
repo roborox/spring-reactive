@@ -6,12 +6,14 @@ import kotlinx.coroutines.reactive.awaitFirst
 import kotlinx.coroutines.reactive.awaitFirstOrNull
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
+import org.springframework.context.ApplicationEventPublisher
 import org.springframework.stereotype.Service
 import ru.roborox.kotlin.coroutine.optimisticLock
 
 //todo log with context
 @Service
 class TaskRunner(
+    private val eventPublisher: ApplicationEventPublisher,
     private val taskRepository: TaskRepository
 ) {
     @ExperimentalCoroutinesApi
@@ -19,25 +21,28 @@ class TaskRunner(
         logger.info("running ${handler.type} with param=$param")
         val task = findAndMarkRunning(handler.type, param)
         if (task != null) {
-            runAndSaveTask(task, param, handler)
+            runAndSaveTask(task, handler)
         }
     }
 
     @Suppress("UNCHECKED_CAST")
-    private suspend fun <T : Any> runAndSaveTask(task: Task, param: String, handler: TaskHandler<T>) {
+    private suspend fun <T : Any> runAndSaveTask(task: Task, handler: TaskHandler<T>) {
+        eventPublisher.publishEvent(TaskRunnerEvent.TaskStartEvent(task)) //todo make sure this is async
         logger.info("starting task $task")
         var current = task
         try {
-            handler.runLongTask(task.state as T?, param)
+            handler.runLongTask(task.state as T?, task.param)
                 .collect { next ->
-                    logger.info("new task state for ${handler.type} with param=$param: $next")
+                    logger.info("new task state for ${handler.type} with param=${task.param}: $next")
                     current = taskRepository.save(current.withState(next)).awaitFirst()
                 }
-            logger.info("completed ${handler.type} with param=$param")
-            taskRepository.save(current.markCompleted()).awaitFirst()
+            logger.info("completed ${handler.type} with param=${task.param}")
+            val saved = taskRepository.save(current.markCompleted()).awaitFirst()
+            eventPublisher.publishEvent(TaskRunnerEvent.TaskCompleteEvent(saved))
         } catch (e: Throwable) {
-            logger.info("error caught executing ${handler.type} with param=$param", e)
-            taskRepository.save(current.markError(e)).awaitFirst()
+            logger.info("error caught executing ${handler.type} with param=${task.param}", e)
+            val saved = taskRepository.save(current.markError(e)).awaitFirst()
+            eventPublisher.publishEvent(TaskRunnerEvent.TaskErrorEvent(saved))
         }
     }
 
