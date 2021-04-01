@@ -17,15 +17,12 @@ class TaskRunner(
     private val taskRepository: TaskRepository
 ) {
     @ExperimentalCoroutinesApi
+    @Suppress("UNCHECKED_CAST")
     suspend fun <T : Any> runLongTask(param: String, handler: TaskHandler<T>) {
         logger.info("running ${handler.type} with param=$param")
-        val task = findAndMarkRunning(handler.type, param)
+        val task = findAndMarkRunning(handler.isAbleToRun(param), handler.type, param)
         if (task != null) {
-            if (handler.isAbleToRun(task.state as T?, task.param)) {
-                runAndSaveTask(task, handler)
-            } else {
-                logger.info("unable to run ${handler.type} with param=$param $task now")
-            }
+            runAndSaveTask(task, handler)
         }
     }
 
@@ -50,24 +47,23 @@ class TaskRunner(
         }
     }
 
-    private suspend fun findAndMarkRunning(type: String, param: String): Task? {
+    private suspend fun findAndMarkRunning(canRun: Boolean, type: String, param: String): Task? {
         return optimisticLock {
             val task = taskRepository.findByTypeAndParam(type, param).awaitFirstOrNull()
-            if (task != null) {
-                if (!task.running && task.lastStatus != TaskStatus.COMPLETED) {
-                    taskRepository.save(task.markRunning()).awaitFirst()
-                } else {
-                    null
-                }
-            } else {
-                val newRunningTask = Task(
+            if (task == null) {
+                val newTask = Task(
                     type = type,
                     param = param,
                     lastStatus = TaskStatus.NONE,
                     state = null,
-                    running = true
+                    running = canRun
                 )
-                taskRepository.save(newRunningTask).awaitFirst()
+                taskRepository.save(newTask).awaitFirst()
+                    .let { if (it.running) it else null }
+            } else if (canRun && !task.running && task.lastStatus != TaskStatus.COMPLETED) {
+                taskRepository.save(task.markRunning()).awaitFirst()
+            } else {
+                null
             }
         }
     }

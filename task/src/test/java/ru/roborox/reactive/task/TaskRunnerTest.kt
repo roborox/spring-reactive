@@ -5,6 +5,8 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.reactive.asFlow
+import kotlinx.coroutines.reactive.awaitFirst
+import kotlinx.coroutines.runBlocking
 import org.apache.commons.lang3.RandomUtils
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
@@ -21,14 +23,35 @@ class TaskRunnerTest : AbstractIntegrationTest() {
         override val type: String
             get() = "MOCK1"
 
-        override fun runLongTask(resume: Int?, param: String): Flow<Int> {
+        override fun runLongTask(from: Int?, param: String): Flow<Int> {
+            return events.asFlow()
+        }
+    }
+
+    val handlerUnableToRun = object : TaskHandler<Int> {
+        override val type: String
+            get() = "MOCK2"
+
+        override suspend fun isAbleToRun(param: String): Boolean = false
+
+        override fun runLongTask(from: Int?, param: String): Flow<Int> {
             return events.asFlow()
         }
     }
 
     @Test
+    fun doesnRunIfUnable() = runBlocking<Unit> {
+        runner.runLongTask("", handlerUnableToRun)
+
+        val task = taskRepository.findByTypeAndParam("MOCK2", "").awaitFirst()
+        assertThat(task)
+            .hasFieldOrPropertyWithValue(Task::lastStatus.name, TaskStatus.NONE)
+        assertThat(task)
+            .hasFieldOrPropertyWithValue(Task::running.name, false)
+    }
+
+    @Test
     fun doesntRunCompleted() {
-        var finished = false
         val newTask = Task(
             type = "MOCK1",
             param = "p1",
@@ -41,7 +64,6 @@ class TaskRunnerTest : AbstractIntegrationTest() {
 
         GlobalScope.launch {
             runner.runLongTask("p1", handler)
-            finished = true
         }
 
         Thread.sleep(500)
