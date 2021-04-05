@@ -56,7 +56,6 @@
         <guice.version>4.2.2</guice.version>
         <commons-beanutils.version>1.9.3</commons-beanutils.version>
         <feign-reactor.version>2.0.30</feign-reactor.version>
-        <kotlinx-coroutines.version>1.4.3</kotlinx-coroutines.version>
         <mockk.version>1.10.6</mockk.version>
     </properties>
 
@@ -84,13 +83,6 @@
                 <artifactId>mockk</artifactId>
                 <version>${mockk.version}</version>
                 <scope>test</scope>
-            </dependency>
-            <dependency>
-                <groupId>org.jetbrains.kotlinx</groupId>
-                <artifactId>kotlinx-coroutines-bom</artifactId>
-                <version>${kotlinx-coroutines.version}</version>
-                <type>pom</type>
-                <scope>import</scope>
             </dependency>
             <dependency>
                 <groupId>ru.roborox.spring</groupId>
