@@ -41,6 +41,7 @@
         <module>validator</module>
         <module>lock</module>
         <module>lock-redis</module>
+        <module>cache</module>
         <module>api</module>
         <module>feign</module>
         <module>task</module>
@@ -124,6 +125,11 @@
                 <groupId>ru.roborox.spring</groupId>
                 <artifactId>task</artifactId>
                 <version>1.2-SNAPSHOT</version>
+            </dependency>
+            <dependency>
+                <groupId>ru.roborox.spring</groupId>
+                <artifactId>cache</artifactId>
+                <version>1.1-SNAPSHOT</version>
             </dependency>
             <dependency>
                 <groupId>ru.roborox.spring</groupId>
