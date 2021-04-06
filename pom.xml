@@ -248,6 +248,11 @@
                 <artifactId>feign-reactor-webclient</artifactId>
                 <version>${feign-reactor.version}</version>
             </dependency>
+            <dependency>
+                <groupId>com.playtika.reactivefeign</groupId>
+                <artifactId>feign-reactor-spring-configuration</artifactId>
+                <version>${feign-reactor.version}</version>
+            </dependency>
         </dependencies>
     </dependencyManagement>
 

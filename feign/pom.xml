@@ -16,6 +16,10 @@
             <artifactId>feign-reactor-webclient</artifactId>
         </dependency>
         <dependency>
+            <groupId>com.playtika.reactivefeign</groupId>
+            <artifactId>feign-reactor-spring-configuration</artifactId>
+        </dependency>
+        <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-databind</artifactId>
         </dependency>
