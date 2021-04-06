@@ -15,6 +15,7 @@ import ru.roborox.kotlin.orNull
 import ru.roborox.kotlin.toOptional
 import ru.roborox.logging.utils.LoggingUtils
 import ru.roborox.reactive.lock.LockService
+import java.util.*
 
 @Service
 class CacheService(
@@ -107,7 +108,7 @@ class CacheService(
     }
 
     private fun <T> updateCache(cache: Cache?, id: String, data: T?): Cache {
-        return cache?.copy(data = data) ?: Cache(id, data)
+        return cache?.copy(data = data, updateDate = Date()) ?: Cache(id, data, updateDate = Date())
     }
 
     companion object {
