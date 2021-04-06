@@ -56,7 +56,7 @@
         <commons-email.version>1.5</commons-email.version>
         <guice.version>4.2.2</guice.version>
         <commons-beanutils.version>1.9.3</commons-beanutils.version>
-        <feign-reactor.version>2.0.30</feign-reactor.version>
+        <feign-reactor.version>2.0.31</feign-reactor.version>
         <mockk.version>1.10.6</mockk.version>
     </properties>
 
