@@ -20,6 +20,18 @@
             <artifactId>logstash-logback-encoder</artifactId>
             <version>4.10</version>
         </dependency>
+        <dependency>
+            <groupId>org.jetbrains.kotlinx</groupId>
+            <artifactId>kotlinx-coroutines-slf4j</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.jetbrains.kotlinx</groupId>
+            <artifactId>kotlinx-coroutines-reactor</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>ru.roborox.spring</groupId>
+            <artifactId>test-common</artifactId>
+        </dependency>
     </dependencies>
 
 </project>
