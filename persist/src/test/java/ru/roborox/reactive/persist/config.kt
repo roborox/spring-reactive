@@ -5,12 +5,12 @@ import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import ru.roborox.reactive.json.ObjectMapperUtils
 import ru.roborox.reactive.persist.configuration.EnableRoboroxMongo
-import ru.roborox.reactive.persist.configuration.IncludePersistProperties
+import ru.roborox.reactive.yaml.YamlPropertySource
 
 @Configuration
 @EnableRoboroxMongo
 @EnableAutoConfiguration
-@IncludePersistProperties
+@YamlPropertySource("classpath:/persist-test.yml")
 class MockContext {
     @Bean
     fun objectMapper() = ObjectMapperUtils.defaultObjectMapper()

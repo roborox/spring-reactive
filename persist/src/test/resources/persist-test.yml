@@ -1,0 +1,6 @@
+spring:
+  data:
+    mongodb:
+      uri: mongodb://localhost
+      database: roborox_reactive
+      autoIndexCreation: true
