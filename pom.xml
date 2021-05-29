@@ -9,9 +9,8 @@
 
     <repositories>
         <repository>
-            <id>nexus-snapshots</id>
-            <name>Internal Snapshots</name>
-            <url>http://10.7.3.6:8081/nexus/content/repositories/snapshots</url>
+            <id>nexus-maven-public</id>
+            <url>http://nexus.rarible.int/repository/maven-public/</url>
         </repository>
     </repositories>
 
