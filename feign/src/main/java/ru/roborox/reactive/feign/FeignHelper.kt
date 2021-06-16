@@ -3,6 +3,7 @@ package ru.roborox.reactive.feign
 import com.fasterxml.jackson.databind.ObjectMapper
 import io.netty.channel.ChannelOption
 import io.netty.channel.epoll.EpollChannelOption
+import org.springframework.boot.web.reactive.function.client.WebClientCustomizer
 import org.springframework.cloud.openfeign.support.SpringMvcContract
 import org.springframework.http.MediaType
 import org.springframework.http.client.reactive.ReactorClientHttpConnector
@@ -16,7 +17,7 @@ import reactivefeign.webclient.WebReactiveFeign
 import reactor.netty.http.client.HttpClient
 
 object FeignHelper {
-    fun <T> createClient(clazz: Class<T>, mapper: ObjectMapper, baseUrl: String): T {
+    fun <T> createClient(clazz: Class<T>, mapper: ObjectMapper, baseUrl: String, clientCustomizer: WebClientCustomizer = NoopWebClientCustomizer): T {
         val strategies = ExchangeStrategies
             .builder()
             .codecs { clientDefaultCodecsConfigurer: ClientCodecConfigurer ->
@@ -35,13 +36,21 @@ object FeignHelper {
                 .option(EpollChannelOption.TCP_KEEPCNT, 8)
         }
         val connector = ReactorClientHttpConnector(client)
+        val builder = WebClient.builder().clientConnector(connector).exchangeStrategies(strategies)
+        clientCustomizer.customize(builder)
         return WebReactiveFeign
-            .builder<T>(WebClient.builder().clientConnector(connector).exchangeStrategies(strategies))
+            .builder<T>(builder)
             .contract(ReactiveContract(SpringMvcContract()))
             .target(clazz, baseUrl)
     }
 
-    inline fun <reified T> createClient(mapper: ObjectMapper, baseUrl: String): T {
-        return createClient(T::class.java, mapper, baseUrl)
+    inline fun <reified T> createClient(mapper: ObjectMapper, baseUrl: String, clientCustomizer: WebClientCustomizer = NoopWebClientCustomizer): T {
+        return createClient(T::class.java, mapper, baseUrl, clientCustomizer)
     }
+}
+
+object NoopWebClientCustomizer: WebClientCustomizer {
+    override fun customize(webClientBuilder: WebClient.Builder?) {
+    }
+
 }
