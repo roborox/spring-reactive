@@ -44,7 +44,11 @@ object FeignHelper {
             .target(clazz, baseUrl)
     }
 
-    inline fun <reified T> createClient(mapper: ObjectMapper, baseUrl: String, clientCustomizer: WebClientCustomizer = NoopWebClientCustomizer): T {
+    inline fun <reified T> createClient(mapper: ObjectMapper, baseUrl: String): T {
+        return createClient(T::class.java, mapper, baseUrl, NoopWebClientCustomizer)
+    }
+
+    inline fun <reified T> createClient(mapper: ObjectMapper, baseUrl: String, clientCustomizer: WebClientCustomizer): T {
         return createClient(T::class.java, mapper, baseUrl, clientCustomizer)
     }
 }
