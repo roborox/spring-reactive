@@ -17,6 +17,10 @@ import reactivefeign.webclient.WebReactiveFeign
 import reactor.netty.http.client.HttpClient
 
 object FeignHelper {
+    fun <T> createClient(clazz: Class<T>, mapper: ObjectMapper, baseUrl: String): T {
+        return createClient(clazz, mapper, baseUrl, NoopWebClientCustomizer)
+    }
+
     fun <T> createClient(clazz: Class<T>, mapper: ObjectMapper, baseUrl: String, clientCustomizer: WebClientCustomizer = NoopWebClientCustomizer): T {
         val strategies = ExchangeStrategies
             .builder()
