@@ -15,6 +15,8 @@ import org.springframework.web.reactive.function.client.WebClient
 import reactivefeign.ReactiveContract
 import reactivefeign.webclient.WebReactiveFeign
 import reactor.netty.http.client.HttpClient
+import reactor.netty.resources.ConnectionProvider
+import java.time.Duration
 
 object FeignHelper {
     fun <T> createClient(clazz: Class<T>, mapper: ObjectMapper, baseUrl: String): T {
@@ -32,13 +34,16 @@ object FeignHelper {
                     Jackson2JsonDecoder(mapper, MediaType.APPLICATION_JSON)
                 )
             }.build()
-
-        val client = HttpClient.create().tcpConfiguration {
+        val provider = ConnectionProvider.builder("raribleFeign")
+            .maxConnections(500)
+            .pendingAcquireMaxCount(-1)
+            .maxIdleTime(Duration.ofSeconds(60))
+            .maxLifeTime(Duration.ofSeconds(60))
+            .lifo()
+            .build()
+        val client = HttpClient.create(provider).tcpConfiguration {
             it.option(ChannelOption.SO_KEEPALIVE, true)
-                .option(EpollChannelOption.TCP_KEEPIDLE, 300)
-                .option(EpollChannelOption.TCP_KEEPINTVL, 60)
-                .option(EpollChannelOption.TCP_KEEPCNT, 8)
-        }
+        }.responseTimeout(Duration.ofSeconds(60))
         val connector = ReactorClientHttpConnector(client)
         val builder = WebClient.builder().clientConnector(connector).exchangeStrategies(strategies)
         clientCustomizer.customize(builder)
