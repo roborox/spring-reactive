@@ -35,7 +35,7 @@ object FeignHelper {
                     Jackson2JsonDecoder(mapper, MediaType.APPLICATION_JSON)
                 )
                 clientDefaultCodecsConfigurer.defaultCodecs().maxInMemorySize(
-                    DataSize.ofMegabytes(2).toBytes().toInt()
+                    DataSize.ofMegabytes(10).toBytes().toInt()
                 )
             }
             .build()
