@@ -34,9 +34,9 @@ object FeignHelper {
                 clientDefaultCodecsConfigurer.defaultCodecs().jackson2JsonDecoder(
                     Jackson2JsonDecoder(mapper, MediaType.APPLICATION_JSON)
                 )
-//                clientDefaultCodecsConfigurer.defaultCodecs().maxInMemorySize(
-//                    DataSize.ofMegabytes(10).toBytes().toInt()
-//                )
+                clientDefaultCodecsConfigurer.defaultCodecs().maxInMemorySize(
+                    DataSize.ofMegabytes(10).toBytes().toInt()
+                )
             }
             .build()
         val provider = ConnectionProvider.builder("raribleFeign")
