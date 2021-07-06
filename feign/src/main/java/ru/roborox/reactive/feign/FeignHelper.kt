@@ -2,7 +2,6 @@ package ru.roborox.reactive.feign
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import io.netty.channel.ChannelOption
-import io.netty.channel.epoll.EpollChannelOption
 import org.springframework.boot.web.reactive.function.client.WebClientCustomizer
 import org.springframework.cloud.openfeign.support.SpringMvcContract
 import org.springframework.http.MediaType
@@ -14,7 +13,9 @@ import org.springframework.util.unit.DataSize
 import org.springframework.web.reactive.function.client.ExchangeStrategies
 import org.springframework.web.reactive.function.client.WebClient
 import reactivefeign.ReactiveContract
+import reactivefeign.ReactiveOptions
 import reactivefeign.webclient.WebReactiveFeign
+import reactivefeign.webclient.WebReactiveOptions
 import reactor.netty.http.client.HttpClient
 import reactor.netty.resources.ConnectionProvider
 import java.time.Duration
@@ -54,6 +55,11 @@ object FeignHelper {
         clientCustomizer.customize(builder)
         return WebReactiveFeign
             .builder<T>(builder)
+            .options(WebReactiveOptions.Builder()
+                .setReadTimeoutMillis(60000)
+                .setWriteTimeoutMillis(60000)
+                .setConnectTimeoutMillis(60000)
+                .build())
             .contract(ReactiveContract(SpringMvcContract()))
             .target(clazz, baseUrl)
     }
