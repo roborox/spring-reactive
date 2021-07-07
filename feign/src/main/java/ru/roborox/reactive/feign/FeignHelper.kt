@@ -41,18 +41,15 @@ object FeignHelper {
             }
             .build()
         val provider = ConnectionProvider.builder("raribleFeign")
-            .maxConnections(50)
+            .maxConnections(500)
             .pendingAcquireMaxCount(-1)
             .maxIdleTime(Duration.ofSeconds(60))
             .maxLifeTime(Duration.ofSeconds(60))
             .lifo()
             .build()
-        val client = HttpClient.create(provider)
-            .tcpConfiguration {
-                it.option(ChannelOption.SO_KEEPALIVE, true)
-            }
-            .responseTimeout(Duration.ofSeconds(60))
-
+        val client = HttpClient.create(provider).tcpConfiguration {
+            it.option(ChannelOption.SO_KEEPALIVE, true)
+        }.responseTimeout(Duration.ofSeconds(60))
         val connector = ReactorClientHttpConnector(client)
         val builder = WebClient.builder().clientConnector(connector).exchangeStrategies(strategies)
         clientCustomizer.customize(builder)
